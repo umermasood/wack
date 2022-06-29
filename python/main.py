@@ -19,13 +19,25 @@ def check_os_platform():
         return 'windows'
 
 
+def valid_location_name(location):
+    with open('../cities.txt', 'r', newline=None) as f:
+        cities = f.readlines()
+        for city in cities:
+            if location.lower() == city.rstrip('\n').lower():
+                return True
+        print('Location not Found, Please enter correct city name')
+        return False
+
+
 def fetch_weather(location):
-    print(f'Checking weather for {location}...')
-    operating_system = check_os_platform()
-    if operating_system == 'linux' or operating_system == 'macos':
-        os.system(f'curl wttr.in/{location}')
-    elif operating_system == 'windows':
-        os.system(f'Invoke-RestMethod https://wttr.in/{location}')
+    print('Checking for valid location name ...')
+    if valid_location_name(location):
+        print(f'Checking weather for {location}...')
+        operating_system = check_os_platform()
+        if operating_system == 'linux' or operating_system == 'macos':
+            os.system(f'curl wttr.in/{location}')
+        elif operating_system == 'windows':
+            os.system(f'Invoke-RestMethod https://wttr.in/{location}')
 
 
 def present_main_menu():
